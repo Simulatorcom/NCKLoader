@@ -131,16 +131,16 @@ local InputPanel = create("Frame", { Size = UDim2.new(1, 0, 0, 42), Position = U
 rounded(InputPanel, 8)
 local inputStroke = outline(InputPanel, Theme.Border, 1.5)
 
-local KeyBox = create("TextBox", { Size = UDim2.new(1, -20, 1, 0), Position = UDim2.new(0, 10, 0, 0), BackgroundTransparency = 1, Text = "", PlaceholderText = "Enter authentication token...", PlaceholderColor3 = Theme.Muted, TextColor3 = Theme.Text, TextSize = 12, Font = Enum.Font.Code, TextXAlignment = Enum.TextXAlignment.Left, ClearTextOnFocus = false, ZIndex = 6, Parent = InputPanel })
+local KeyBox = create("TextBox", { Size = UDim2.new(1, -20, 1, 0), Position = UDim2.new(0, 10, 0, 0), BackgroundTransparency = 1, Text = "", PlaceholderText = "Enter key...", PlaceholderColor3 = Theme.Muted, TextColor3 = Theme.Text, TextSize = 12, Font = Enum.Font.Code, TextXAlignment = Enum.TextXAlignment.Left, ClearTextOnFocus = false, ZIndex = 6, Parent = InputPanel })
 
 KeyBox.Focused:Connect(function() anim(inputStroke, { Color = Theme.Accent }) end)
 KeyBox.FocusLost:Connect(function() anim(inputStroke, { Color = Theme.Border }) end)
 
-local MsgLabel = create("TextLabel", { Size = UDim2.new(1, 0, 0, 20), Position = UDim2.new(0, 0, 0, 105), BackgroundTransparency = 1, Text = "Tokens can be generated for free inside our communications server.", TextColor3 = Theme.Muted, TextSize = 10, Font = Enum.Font.Gotham, ZIndex = 5, Parent = KeyView })
+local MsgLabel = create("TextLabel", { Size = UDim2.new(1, 0, 0, 20), Position = UDim2.new(0, 0, 0, 105), BackgroundTransparency = 1, Text = "Keys can be found for free inside our Discord server.", TextColor3 = Theme.Muted, TextSize = 10, Font = Enum.Font.Gotham, ZIndex = 5, Parent = KeyView })
 
 local Actions = create("Frame", { Size = UDim2.new(1, 0, 0, 40), Position = UDim2.new(0, 0, 1, -40), BackgroundTransparency = 1, ZIndex = 5, Parent = KeyView })
 
-local DiscBtn = create("TextButton", { Size = UDim2.new(0, 110, 1, 0), BackgroundColor3 = Theme.Panel, Text = "Get Token", TextColor3 = Theme.Text, TextSize = 11, Font = Enum.Font.GothamBold, AutoButtonColor = false, ZIndex = 6, Parent = Actions })
+local DiscBtn = create("TextButton", { Size = UDim2.new(0, 110, 1, 0), BackgroundColor3 = Theme.Panel, Text = "Get Key", TextColor3 = Theme.Text, TextSize = 11, Font = Enum.Font.GothamBold, AutoButtonColor = false, ZIndex = 6, Parent = Actions })
 rounded(DiscBtn, 8)
 outline(DiscBtn, Theme.Border, 1)
 bindHover(DiscBtn, Theme.Panel, Color3.fromRGB(24, 24, 32), Color3.fromRGB(16, 16, 22))
@@ -157,9 +157,9 @@ bindHover(AuthBtn, Theme.AccentDim, Color3.fromRGB(0, 80, 105), Color3.fromRGB(0
 
 local UnsupView = create("Frame", { Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Visible = checkKey(saved) and not IS_TARGET_GAME, ZIndex = 4, Parent = Container })
 
-create("TextLabel", { Size = UDim2.new(1, 0, 0, 30), Position = UDim2.new(0, 0, 0, 20), BackgroundTransparency = 1, Text = "Unsupported Location", TextColor3 = Theme.Text, TextSize = 16, Font = Enum.Font.GothamBold, ZIndex = 5, Parent = UnsupView })
+create("TextLabel", { Size = UDim2.new(1, 0, 0, 30), Position = UDim2.new(0, 0, 0, 20), BackgroundTransparency = 1, Text = "Unsupported Game", TextColor3 = Theme.Text, TextSize = 16, Font = Enum.Font.GothamBold, ZIndex = 5, Parent = UnsupView })
 
-create("TextLabel", { Size = UDim2.new(1, 0, 0, 40), Position = UDim2.new(0, 0, 0, 50), BackgroundTransparency = 1, Text = "Your token is valid, but Nck lacks a module for this specific environment. Join the network to request support.", TextColor3 = Theme.Muted, TextSize = 11, Font = Enum.Font.Gotham, TextWrapped = true, ZIndex = 5, Parent = UnsupView })
+create("TextLabel", { Size = UDim2.new(1, 0, 0, 40), Position = UDim2.new(0, 0, 0, 50), BackgroundTransparency = 1, Text = "Your key is valid, but Nck lacks a module for this specific environment. Join the discord for support.", TextColor3 = Theme.Muted, TextSize = 11, Font = Enum.Font.Gotham, TextWrapped = true, ZIndex = 5, Parent = UnsupView })
 
 local JoinBtn = create("TextButton", { Size = UDim2.new(0, 160, 0, 38), Position = UDim2.new(0.5, -80, 1, -45), BackgroundColor3 = Theme.Panel, Text = "Copy Network Link", TextColor3 = Theme.Text, TextSize = 11, Font = Enum.Font.GothamBold, AutoButtonColor = false, ZIndex = 6, Parent = UnsupView })
 rounded(JoinBtn, 8)
@@ -217,7 +217,7 @@ AuthBtn.MouseButton1Click:Connect(function()
     end
 
     if not checkKey(txt) then
-        MsgLabel.Text = "Access denied: Token signature invalid."
+        MsgLabel.Text = "Access denied: Key invalid."
         MsgLabel.TextColor3 = Theme.Red
         triggerShake()
         return

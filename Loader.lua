@@ -53,7 +53,9 @@ local function checkKey(key)
 end
 
 local saved = loadKey()
-if checkKey(saved) and IS_TARGET_GAME then
+local hasValidKey = checkKey(saved)
+
+if hasValidKey and IS_TARGET_GAME then
     pcall(function() loadstring(game:HttpGet(TARGET_URL))() end)
     return
 end
@@ -131,7 +133,7 @@ end)
 
 local Container = create("Frame", { Size = UDim2.new(1, -32, 1, -65), Position = UDim2.new(0, 16, 0, 55), BackgroundTransparency = 1, ZIndex = 3, Parent = MainFrame })
 
-local KeyView = create("Frame", { Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Visible = not checkKey(saved), ZIndex = 4, Parent = Container })
+local KeyView = create("Frame", { Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Visible = not hasValidKey, ZIndex = 4, Parent = Container })
 
 local StatusBox = create("Frame", { Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = Theme.Panel, ZIndex = 5, Parent = KeyView })
 rounded(StatusBox, 8)
@@ -171,7 +173,7 @@ rounded(AuthBtn, 8)
 local authStroke = outline(AuthBtn, Theme.Accent, 1)
 bindHover(AuthBtn, Theme.AccentDim, Color3.fromRGB(0, 80, 105), Color3.fromRGB(0, 45, 60))
 
-local UnsupView = create("Frame", { Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Visible = checkKey(saved) and not IS_TARGET_GAME, ZIndex = 4, Parent = Container })
+local UnsupView = create("Frame", { Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Visible = hasValidKey and not IS_TARGET_GAME, ZIndex = 4, Parent = Container })
 
 create("TextLabel", { Size = UDim2.new(1, 0, 0, 30), Position = UDim2.new(0, 0, 0, 20), BackgroundTransparency = 1, Text = "Unsupported Game", TextColor3 = Theme.Text, TextSize = 16, Font = Enum.Font.GothamBold, ZIndex = 5, Parent = UnsupView })
 

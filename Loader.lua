@@ -2,8 +2,8 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
 local RunService = game:GetService("RunService")
-local CoreGui = game:GetService("CoreGui")
 local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
 local VALID_KEYS = { "FREE" }
 local DISCORD_LINK = "https://discord.gg/DHeCNzTypH"
@@ -58,8 +58,8 @@ if checkKey(saved) and IS_TARGET_GAME then
     return
 end
 
-if CoreGui:FindFirstChild("NckUniversalLoader") then
-    CoreGui:FindFirstChild("NckUniversalLoader"):Destroy()
+if PlayerGui:FindFirstChild("NckUniversalLoader") then
+    PlayerGui:FindFirstChild("NckUniversalLoader"):Destroy()
 end
 
 local Theme = {
@@ -103,7 +103,7 @@ local function bindHover(btn, normal, hover, press)
     btn.MouseButton1Up:Connect(function() anim(btn, { BackgroundColor3 = hover }) end)
 end
 
-local UI = create("ScreenGui", { Name = "NckUniversalLoader", ResetOnSpawn = false, IgnoreGuiInset = true, Parent = CoreGui })
+local UI = create("ScreenGui", { Name = "NckUniversalLoader", ResetOnSpawn = false, IgnoreGuiInset = true, Parent = PlayerGui })
 local Blur = create("Frame", { Size = UDim2.new(1, 0, 1, 0), BackgroundColor3 = Color3.fromRGB(0, 0, 0), BackgroundTransparency = 1, ZIndex = 1, Parent = UI })
 
 local MainFrame = create("Frame", { Size = UDim2.new(0, 420, 0, 290), Position = UDim2.new(0.5, 0, 0.5, 0), AnchorPoint = Vector2.new(0.5, 0.5), BackgroundColor3 = Theme.Main, BackgroundTransparency = 1, ClipsDescendants = true, ZIndex = 2, Parent = UI })

@@ -2,6 +2,7 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
 local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
 
 pcall(function()
     if delfile and isfile("NckLoader_Auth.txt") then
@@ -15,7 +16,7 @@ task.wait(0.5)
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:FindFirstChildOfClass("PlayerGui") or LocalPlayer:WaitForChild("PlayerGui", 10)
 
-local VALID_KEYS = { "12312" }
+local VALID_KEYS = { "DEIN_NEUER_KEY_HIER" }
 local DISCORD_LINK = "https://discord.gg/DHeCNzTypH"
 local KEY_SAVE_NAME = "NckLoader_Auth.txt"
 
@@ -60,7 +61,7 @@ local Theme = {
     Main = Color3.fromRGB(12, 12, 16),
     Panel = Color3.fromRGB(18, 18, 24),
     Accent = Color3.fromRGB(0, 200, 255),
-    AccentDim = Color3.fromRGB(0, 60, 80),
+    AccentDim = Color3.fromRGB(0, 150, 200),
     Text = Color3.fromRGB(240, 243, 246),
     Muted = Color3.fromRGB(130, 140, 150),
     Border = Color3.fromRGB(32, 35, 45),
@@ -90,9 +91,15 @@ local function anim(obj, props, t)
     TweenService:Create(obj, TweenInfo.new(t or 0.2, Enum.EasingStyle.Cubic, Enum.EasingDirection.Out), props):Play()
 end
 
-local function bindHover(btn, normal, hover, press)
-    btn.MouseEnter:Connect(function() anim(btn, { BackgroundColor3 = hover }) end)
-    btn.MouseLeave:Connect(function() anim(btn, { BackgroundColor3 = normal }) end)
+local function bindHover(btn, normal, hover, press, stroke, strokeNorm, strokeHover)
+    btn.MouseEnter:Connect(function() 
+        anim(btn, { BackgroundColor3 = hover }) 
+        if stroke then anim(stroke, { Color = strokeHover }) end
+    end)
+    btn.MouseLeave:Connect(function() 
+        anim(btn, { BackgroundColor3 = normal }) 
+        if stroke then anim(stroke, { Color = strokeNorm }) end
+    end)
     btn.MouseButton1Down:Connect(function() anim(btn, { BackgroundColor3 = press }) end)
     btn.MouseButton1Up:Connect(function() anim(btn, { BackgroundColor3 = hover }) end)
 end
@@ -105,6 +112,9 @@ rounded(MainFrame, 12)
 local mainStroke = outline(MainFrame, Theme.Border, 1.5)
 
 local Header = create("Frame", { Size = UDim2.new(1, 0, 0, 45), BackgroundColor3 = Theme.Panel, ZIndex = 3, Parent = MainFrame })
+rounded(Header, 12)
+
+local HeaderFix = create("Frame", { Size = UDim2.new(1, 0, 0, 10), Position = UDim2.new(0, 0, 1, -10), BackgroundColor3 = Theme.Panel, BorderSizePixel = 0, ZIndex = 3, Parent = Header })
 create("Frame", { Size = UDim2.new(1, 0, 0, 1), Position = UDim2.new(0, 0, 1, -1), BackgroundColor3 = Theme.Border, BorderSizePixel = 0, ZIndex = 4, Parent = Header })
 
 create("TextLabel", { Size = UDim2.new(0, 200, 1, 0), Position = UDim2.new(0, 16, 0, 0), BackgroundTransparency = 1, Text = "NCK // LOADER", TextColor3 = Theme.Text, TextSize = 13, Font = Enum.Font.Code, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 4, Parent = Header })
@@ -121,6 +131,34 @@ Close.MouseButton1Click:Connect(function()
     anim(Blur, { BackgroundTransparency = 1 }, 0.25)
     task.wait(0.26)
     UI:Destroy()
+end)
+
+local dragging, dragInput, dragStart, startPos
+Header.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = MainFrame.Position
+        
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+Header.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        local delta = input.Position - dragStart
+        MainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+    end
 end)
 
 local Container = create("Frame", { Size = UDim2.new(1, -32, 1, -65), Position = UDim2.new(0, 16, 0, 55), BackgroundTransparency = 1, ZIndex = 3, Parent = MainFrame })
@@ -146,7 +184,7 @@ local KeyBox = create("TextBox", { Size = UDim2.new(1, -20, 1, 0), Position = UD
 KeyBox.Focused:Connect(function() anim(inputStroke, { Color = Theme.Accent }) end)
 KeyBox.FocusLost:Connect(function() anim(inputStroke, { Color = Theme.Border }) end)
 
-local MsgLabel = create("TextLabel", { Size = UDim2.new(1, 0, 0, 20), Position = UDim2.new(0, 0, 0, 105), BackgroundTransparency = 1, Text = "Keys can be found for free inside our Discord server.", Theme.Muted, TextSize = 10, Font = Enum.Font.Gotham, ZIndex = 5, Parent = KeyView })
+local MsgLabel = create("TextLabel", { Size = UDim2.new(1, 0, 0, 20), Position = UDim2.new(0, 0, 0, 105), BackgroundTransparency = 1, Text = "Keys can be found for free inside our Discord server.", TextColor3 = Theme.Muted, TextSize = 10, Font = Enum.Font.Gotham, ZIndex = 5, Parent = KeyView })
 
 local Actions = create("Frame", { Size = UDim2.new(1, 0, 0, 40), Position = UDim2.new(0, 0, 1, -40), BackgroundTransparency = 1, ZIndex = 5, Parent = KeyView })
 
@@ -160,10 +198,10 @@ rounded(PasteBtn, 8)
 outline(PasteBtn, Theme.Border, 1)
 bindHover(PasteBtn, Theme.Panel, Color3.fromRGB(24, 24, 32), Color3.fromRGB(16, 16, 22))
 
-local AuthBtn = create("TextButton", { Size = UDim2.new(1, -210, 1, 0), Position = UDim2.new(0, 210, 0, 0), BackgroundColor3 = Theme.AccentDim, Text = "Authenticate", TextColor3 = Theme.Accent, TextSize = 11, Font = Enum.Font.GothamBold, AutoButtonColor = false, ZIndex = 6, Parent = Actions })
+local AuthBtn = create("TextButton", { Size = UDim2.new(1, -210, 1, 0), Position = UDim2.new(0, 210, 0, 0), BackgroundColor3 = Theme.Accent, Text = "Authenticate", TextColor3 = Color3.fromRGB(12, 12, 16), TextSize = 11, Font = Enum.Font.GothamBold, AutoButtonColor = false, ZIndex = 6, Parent = Actions })
 rounded(AuthBtn, 8)
 local authStroke = outline(AuthBtn, Theme.Accent, 1)
-bindHover(AuthBtn, Theme.AccentDim, Color3.fromRGB(0, 80, 105), Color3.fromRGB(0, 45, 60))
+bindHover(AuthBtn, Theme.Accent, Theme.AccentDim, Color3.fromRGB(0, 110, 150), authStroke, Theme.Accent, Theme.AccentDim)
 
 local UnsupView = create("Frame", { Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Visible = false, ZIndex = 4, Parent = Container })
 

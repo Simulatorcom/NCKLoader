@@ -16,12 +16,12 @@ task.wait(0.5)
 local LocalPlayer = Players.LocalPlayer
 local PlayerGui = LocalPlayer:FindFirstChildOfClass("PlayerGui") or LocalPlayer:WaitForChild("PlayerGui", 10)
 
-local VALID_KEYS = { "DEIN_NEUER_KEY_HIER" }
+local VALID_KEYS = { "FREE" }
 local DISCORD_LINK = "https://discord.gg/DHeCNzTypH"
 local KEY_SAVE_NAME = "NckLoader_Auth.txt"
 
 local SCRIPTS = {
-    { Name = "Pet Simulator 99", Icon = "🐱", URL = "https://raw.githubusercontent.com/Simulatorcom/Ps99/refs/heads/main/Source", GameId = 5063162797, PlaceIds = { 8737899170, 16498369165, 17462057395 } }
+    { Name = "Pet Simulator 99", Icon = "🐱", URL = "https://raw.githubusercontent.com/Simulatorcom/Ps99/refs/heads/main/Source.lua", GameId = 5063162797, PlaceIds = { 8737899170, 16498369165, 17462057395 } }
 }
 
 local currentScript = nil

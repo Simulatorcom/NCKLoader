@@ -9,7 +9,7 @@ local VALID_KEYS = { "FREE" }
 local DISCORD_LINK = "https://discord.gg/DHeCNzTypH"
 local KEY_SAVE_NAME = "NckLoader_Auth.txt"
 
-local TARGET_URL = "https://raw.githubusercontent.com/hersheyzchoco-cmyk/awcc/refs/heads/main/aas.lua"
+local TARGET_URL = "https://raw.githubusercontent.com/Simulatorcom/Ps99/refs/heads/main/Source.lua"
 local IS_TARGET_GAME = (game.GameId == 5063162797 or game.PlaceId == 8737899170 or game.PlaceId == 16498369165 or game.PlaceId == 17462057395)
 
 local function saveKey(key)

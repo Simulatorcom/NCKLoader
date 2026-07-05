@@ -9,8 +9,23 @@ local VALID_KEYS = { "FREE" }
 local DISCORD_LINK = "https://discord.gg/DHeCNzTypH"
 local KEY_SAVE_NAME = "NckLoader_Auth.txt"
 
-local TARGET_URL = "https://raw.githubusercontent.com/Simulatorcom/Ps99/refs/heads/main/Source.lua"
-local IS_TARGET_GAME = (game.GameId == 8737899170)
+local SCRIPTS = {
+    { Name = "Pet Simulator 99", Icon = "🐱", URL = "https://raw.githubusercontent.com/Simulatorcom/Ps99/refs/heads/main/Source.lua", GameId = 5063162797, PlaceIds = { 8737899170, 16498369165, 17462057395 } }
+}
+
+local currentScript = nil
+for _, scriptData in ipairs(SCRIPTS) do
+    if game.GameId == scriptData.GameId or game.PlaceId == scriptData.GameId then
+        currentScript = scriptData
+        break
+    elseif scriptData.PlaceIds and table.find(scriptData.PlaceIds, game.PlaceId) then
+        currentScript = scriptData
+        break
+    end
+end
+
+local IS_TARGET_GAME = (currentScript ~= nil)
+local TARGET_URL = IS_TARGET_GAME and currentScript.URL or ""
 
 local function saveKey(key)
     pcall(function()
@@ -125,7 +140,8 @@ local statusStroke = outline(StatusBox, Theme.Border, 1)
 local StatusIndicator = create("Frame", { Size = UDim2.new(0, 6, 0, 6), Position = UDim2.new(0, 12, 0.5, -3), BackgroundColor3 = IS_TARGET_GAME and Theme.Green or Theme.Red, ZIndex = 6, Parent = StatusBox })
 rounded(StatusIndicator, 3)
 
-local StatusText = create("TextLabel", { Size = UDim2.new(1, -30, 1, 0), Position = UDim2.new(0, 26, 0, 0), BackgroundTransparency = 1, Text = IS_TARGET_GAME and "Target identified: Pet Simulator 99" or "System idle: Game not supported", TextColor3 = Theme.Text, TextSize = 11, Font = Enum.Font.GothamMedium, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 6, Parent = StatusBox })
+local statusMsg = IS_TARGET_GAME and ("Target identified: " .. (currentScript.Icon or "") .. " " .. currentScript.Name) or "System idle: Game not supported"
+local StatusText = create("TextLabel", { Size = UDim2.new(1, -30, 1, 0), Position = UDim2.new(0, 26, 0, 0), BackgroundTransparency = 1, Text = statusMsg, TextColor3 = Theme.Text, TextSize = 11, Font = Enum.Font.GothamMedium, TextXAlignment = Enum.TextXAlignment.Left, ZIndex = 6, Parent = StatusBox })
 
 local InputPanel = create("Frame", { Size = UDim2.new(1, 0, 0, 42), Position = UDim2.new(0, 0, 0, 54), BackgroundColor3 = Color3.fromRGB(8, 8, 12), ZIndex = 5, Parent = KeyView })
 rounded(InputPanel, 8)

@@ -10,7 +10,7 @@ local DISCORD_LINK = "https://discord.gg/DHeCNzTypH"
 local KEY_SAVE_NAME = "NckLoader_Auth.txt"
 
 local SCRIPTS = {
-    { Name = "Pet Simulator 99", Icon = "🐱", URL = "https://raw.githubusercontent.com/Simulatorcom/Ps99/refs/heads/main/Source.lua", GameId = 5063162797, PlaceIds = { 8737899170, 16498369165, 17462057395 } }
+    { Name = "Pet Simulator 99", Icon = "🐱", URL = "https://raw.githubusercontent.com/Simulatorcom/Ps99/refs/heads/main/Source.lua", GameId = 8737899170, PlaceIds = { 8737899170, 16498369165, 17462057395 } }
 }
 
 local currentScript = nil

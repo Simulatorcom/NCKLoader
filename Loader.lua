@@ -2,15 +2,25 @@ local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local HttpService = game:GetService("HttpService")
 local RunService = game:GetService("RunService")
-local LocalPlayer = Players.LocalPlayer
-local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
 
-local VALID_KEYS = { "2123" }
+pcall(function()
+    if delfile and isfile("NckLoader_Auth.txt") then
+        delfile("NckLoader_Auth.txt")
+    end
+end)
+
+if not game:IsLoaded() then game.Loaded:Wait() end
+task.wait(0.5)
+
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:FindFirstChildOfClass("PlayerGui") or LocalPlayer:WaitForChild("PlayerGui", 10)
+
+local VALID_KEYS = { "1312" }
 local DISCORD_LINK = "https://discord.gg/DHeCNzTypH"
 local KEY_SAVE_NAME = "NckLoader_Auth.txt"
 
 local SCRIPTS = {
-    { Name = "Pet Simulator 99", Icon = "🐱", URL = "https://raw.githubusercontent.com/Simulatorcom/Ps99/refs/heads/main/Source", GameId = 5063162797, PlaceIds = { 8737899170, 16498369165, 17462057395 } }
+    { Name = "Pet Simulator 99", Icon = "🐱", URL = "https://raw.githubusercontent.com/Simulatorcom/Ps99/refs/heads/main/Source.lua", GameId = 5063162797, PlaceIds = { 8737899170, 16498369165, 17462057395 } }
 }
 
 local currentScript = nil
@@ -33,16 +43,6 @@ local function saveKey(key)
     end)
 end
 
-local function loadKey()
-    local res = nil
-    pcall(function()
-        if isfile and readfile and isfile(KEY_SAVE_NAME) then
-            res = readfile(KEY_SAVE_NAME)
-        end
-    end)
-    return res
-end
-
 local function checkKey(key)
     if not key or key == "" then return false end
     key = key:gsub("^%s+", ""):gsub("%s+$", "")
@@ -50,14 +50,6 @@ local function checkKey(key)
         if key == v then return true end
     end
     return false
-end
-
-local saved = loadKey()
-local hasValidKey = checkKey(saved)
-
-if hasValidKey and IS_TARGET_GAME then
-    pcall(function() loadstring(game:HttpGet(TARGET_URL))() end)
-    return
 end
 
 if PlayerGui:FindFirstChild("NckUniversalLoader") then
@@ -133,7 +125,7 @@ end)
 
 local Container = create("Frame", { Size = UDim2.new(1, -32, 1, -65), Position = UDim2.new(0, 16, 0, 55), BackgroundTransparency = 1, ZIndex = 3, Parent = MainFrame })
 
-local KeyView = create("Frame", { Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Visible = not hasValidKey, ZIndex = 4, Parent = Container })
+local KeyView = create("Frame", { Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Visible = true, ZIndex = 4, Parent = Container })
 
 local StatusBox = create("Frame", { Size = UDim2.new(1, 0, 0, 38), BackgroundColor3 = Theme.Panel, ZIndex = 5, Parent = KeyView })
 rounded(StatusBox, 8)
@@ -154,7 +146,7 @@ local KeyBox = create("TextBox", { Size = UDim2.new(1, -20, 1, 0), Position = UD
 KeyBox.Focused:Connect(function() anim(inputStroke, { Color = Theme.Accent }) end)
 KeyBox.FocusLost:Connect(function() anim(inputStroke, { Color = Theme.Border }) end)
 
-local MsgLabel = create("TextLabel", { Size = UDim2.new(1, 0, 0, 20), Position = UDim2.new(0, 0, 0, 105), BackgroundTransparency = 1, Text = "Keys can be found for free inside our Discord server.", TextColor3 = Theme.Muted, TextSize = 10, Font = Enum.Font.Gotham, ZIndex = 5, Parent = KeyView })
+local MsgLabel = create("TextLabel", { Size = UDim2.new(1, 0, 0, 20), Position = UDim2.new(0, 0, 0, 105), BackgroundTransparency = 1, Text = "Keys can be found for free inside our Discord server.", Theme.Muted, TextSize = 10, Font = Enum.Font.Gotham, ZIndex = 5, Parent = KeyView })
 
 local Actions = create("Frame", { Size = UDim2.new(1, 0, 0, 40), Position = UDim2.new(0, 0, 1, -40), BackgroundTransparency = 1, ZIndex = 5, Parent = KeyView })
 
@@ -173,7 +165,7 @@ rounded(AuthBtn, 8)
 local authStroke = outline(AuthBtn, Theme.Accent, 1)
 bindHover(AuthBtn, Theme.AccentDim, Color3.fromRGB(0, 80, 105), Color3.fromRGB(0, 45, 60))
 
-local UnsupView = create("Frame", { Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Visible = hasValidKey and not IS_TARGET_GAME, ZIndex = 4, Parent = Container })
+local UnsupView = create("Frame", { Size = UDim2.new(1, 0, 1, 0), BackgroundTransparency = 1, Visible = false, ZIndex = 4, Parent = Container })
 
 create("TextLabel", { Size = UDim2.new(1, 0, 0, 30), Position = UDim2.new(0, 0, 0, 20), BackgroundTransparency = 1, Text = "Unsupported Game", TextColor3 = Theme.Text, TextSize = 16, Font = Enum.Font.GothamBold, ZIndex = 5, Parent = UnsupView })
 
@@ -194,10 +186,8 @@ rounded(BarFill, 3)
 local LoadTitle = create("TextLabel", { Size = UDim2.new(1, 0, 0, 20), Position = UDim2.new(0, 0, 0, 60), BackgroundTransparency = 1, Text = "Injecting module...", TextColor3 = Theme.Text, TextSize = 13, Font = Enum.Font.Code, ZIndex = 5, Parent = LoadView })
 
 MainFrame.Size = UDim2.new(0, 420, 0, 0)
-task.wait(0.1)
 anim(Blur, { BackgroundTransparency = 0.7 }, 0.4)
 anim(MainFrame, { Size = UDim2.new(0, 420, 0, 290), BackgroundTransparency = 0 }, 0.4)
-task.wait(0.4)
 
 DiscBtn.MouseButton1Click:Connect(function()
     if setclipboard then setclipboard(DISCORD_LINK) end
